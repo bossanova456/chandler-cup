@@ -1,11 +1,11 @@
-export const data = [
+export const pickData = [
   {
     "id": 1,
     "name": "sharon",
     "weeklyPicks": [
       {
         "id": 11,
-        "weekNum": "1",
+        "weekNum": 0,
         "score": 0,
         "matchUps": [
           {
@@ -60,7 +60,7 @@ export const data = [
         ]
       },
       {
-        "weekNum": "2",
+        "weekNum": 1,
         "score": 0,
         "matchUps": [
           {
