@@ -9,7 +9,7 @@ import {
   Button
 } from "shards-react";
 
-function PickCard({ matchUp }) {
+function MatchUpCard({ matchUp }) {
   const { favoredTeamName, underdogTeamName, pick } = matchUp;
   return (
     <Card style={{ maxWidth: "200px" }}>
@@ -24,4 +24,4 @@ function PickCard({ matchUp }) {
   );
 }
 
-export default PickCard;
+export default MatchUpCard;

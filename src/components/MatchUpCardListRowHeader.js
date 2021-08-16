@@ -8,7 +8,7 @@ import {
   CardFooter
 } from "shards-react";
 
-function PickCardListRowHeader({ playerName, weeklyScore }) {
+function MatchUpCardListRowHeader({ playerName, weeklyScore }) {
   return (
     <Card style={{ maxWidth: "200px" }}>
       <CardHeader>{playerName}</CardHeader>
@@ -20,4 +20,4 @@ function PickCardListRowHeader({ playerName, weeklyScore }) {
   );
 }
 
-export default PickCardListRowHeader;
+export default MatchUpCardListRowHeader;

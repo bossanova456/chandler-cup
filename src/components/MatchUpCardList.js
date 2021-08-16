@@ -1,8 +1,8 @@
-import PickCard from "./PickCard"
+import MatchUpCard from "./MatchUpCard"
 import { Container, Row, Col } from "shards-react";
-import PickCardListRowHeader from "./PickCardListRowHeader";
+import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
 
-function PickCardList({ player, weekNum }) {
+function MatchUpCardList({ player, weekNum }) {
   const { name, weeklyPicks } = player;
   const selectedWeekPicks = weeklyPicks.find(function(singleWeekPicks) {
     return singleWeekPicks.weekNum === weekNum;
@@ -12,13 +12,13 @@ function PickCardList({ player, weekNum }) {
     <Container fluid>
       <Row form>
         <Col>
-          <PickCardListRowHeader playerName={name} weeklyScore={12} />
+          <MatchUpCardListRowHeader playerName={name} weeklyScore={12} />
         </Col>
         {
           selectedWeekPicks ?
             selectedWeekPicks.matchUps.map(function(matchUp) {
               return (
-                <Col><PickCard matchUp={matchUp} /></Col>
+                <Col><MatchUpCard matchUp={matchUp} /></Col>
               );
             }) :
             <p>No picks for week {weekNum+1}</p>
@@ -28,4 +28,4 @@ function PickCardList({ player, weekNum }) {
   );
 }
 
-export default PickCardList;
+export default MatchUpCardList;
