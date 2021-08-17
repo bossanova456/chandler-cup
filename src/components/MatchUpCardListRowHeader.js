@@ -11,11 +11,11 @@ import {
 function MatchUpCardListRowHeader({ playerName, weeklyScore }) {
   return (
     <Card style={{ maxWidth: "200px" }}>
-      <CardHeader>{playerName}</CardHeader>
+      <CardHeader>#1</CardHeader>
       <CardBody>
-        <CardTitle>{weeklyScore + " weekly score"}</CardTitle>
+        <CardTitle>{playerName}</CardTitle>
       </CardBody>
-      <CardFooter>Card footer</CardFooter>
+      <CardFooter>{weeklyScore + " points this week"}</CardFooter>
     </Card>
   );
 }
