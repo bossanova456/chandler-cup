@@ -2,19 +2,18 @@ import MatchUpCard from "./MatchUpCard"
 import { Container, Row, Col } from "shards-react";
 import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
 
-import {matchUpData} from "../MatchUpData";
-import {teamData} from "../TeamData";
-
-function MatchUpCardList({ player, weekNum }) {
+function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
   const {name, weeklyPicks} = player;
 
-  const selectedWeekMatchUps = matchUpData.find(function (singleWeekMatchUps) {
-    return singleWeekMatchUps.weekNum === weekNum;
-  });
+  // const selectedWeekMatchUps = matchUpData.find(function (singleWeekMatchUps) {
+  //   return singleWeekMatchUps.weekNum === weekNum;
+  // });
 
   const selectedWeekPicks = weeklyPicks.find(function (singleWeekPicks) {
     return singleWeekPicks.weekNum === weekNum;
   });
+
+  console.log(selectedWeekPicks);
 
   const joinMatchUpJsonData = (targetJson, targetJsonJoinKey, targetJsonWriteKey, matchingJson, matchingJsonJoinKey, matchingJsonWriteKey) => {
     Object.keys(targetJson.matchUps)
@@ -23,13 +22,9 @@ function MatchUpCardList({ player, weekNum }) {
         const favoredTeam = matchingJson.find(function (data) {
           return data[matchingJsonJoinKey] === targetJson.matchUps[key][targetJsonJoinKey];
         });
-        // const underdogTeam = teamData.find(function (team) {
-        //   return team.teamId === targetJson.matchUps[key].underdogTeamId;
-        // });
 
         // Add key & value to match up data
         targetJson.matchUps[key][targetJsonWriteKey] = favoredTeam[matchingJsonWriteKey];
-        // targetJson.matchUps[key].underdogTeamName = underdogTeam.teamName;
       });
   }
 
