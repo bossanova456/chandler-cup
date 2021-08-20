@@ -13,7 +13,6 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "material-kit-react": "^1.10.0",
     "morgan": "~1.9.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",

@@ -1,11 +1,13 @@
-import {FormSelect, Button, Modal, ModalBody, ModalHeader} from "shards-react";
+import {Button} from "shards-react";
 import {useState} from "react";
+
+import AddMatchUpModal from "./AddMatchUpModal";
+import SelectWeekDropDown from "./SelectWeekDropDown";
 import MatchUpCardList from "./MatchUpCardList";
 
 import {matchUpData} from "../MatchUpData";
 import {pickData} from "../PickData";
 import {teamData} from "../TeamData";
-import AddMatchUpModal from "./AddMatchUpModal";
 
 function MatchUpCardListContainer() {
   const [ selectedPlayer, setSelectedPlayer ] = useState("sharon");
@@ -26,7 +28,9 @@ function MatchUpCardListContainer() {
     setShowAddMatchUpModal(!showAddMatchUpModal);
   }
 
-  function addMatchUp(favoredTeamId, underdogTeamId) {
+  function addMatchUpById(favoredTeamId, underdogTeamId) {
+    // TODO: properly generate match up ID
+    // console.log("Adding team IDs: " + favoredTeamId + " | " + underdogTeamId);
     selectedWeekMatchUps.matchUps = [
       ...selectedWeekMatchUps.matchUps,
       {
@@ -36,34 +40,14 @@ function MatchUpCardListContainer() {
         "game_start_ts": "01-01-1970 00:00:00.000"
       }
     ];
-
-    console.log("New match ups:");
-    console.log(selectedWeekMatchUps);
   }
 
   return (
     <div>
-      <FormSelect
-        size="md"
-        onChange={(event) => {
-          selectWeek(parseInt(event.target.value));
-        }}
-      >
-        {
-          [...Array(16).keys()].map(function (weekNumOption) {
-            return (
-              <option
-                value={weekNumOption}
-                disabled={!matchUpData.find(function (matchUp) {
-                  return matchUp.weekNum === weekNumOption;
-                })}
-              >
-                Week {weekNumOption+1}
-              </option>
-            )
-          })
-        }
-      </FormSelect>
+      <SelectWeekDropDown
+        matchUpData={matchUpData}
+        selectWeek={selectWeek}
+      />
       <Button
         size="md"
         onClick={() => toggleModal()}
@@ -76,16 +60,17 @@ function MatchUpCardListContainer() {
         toggleModal={toggleModal}
         selectedWeekMatchUps={selectedWeekMatchUps}
         teamData={teamData}
-        addMatchUp={addMatchUp}
+        currentMatchUps={selectedWeekMatchUps}
+        addMatchUpById={addMatchUpById}
       />
       {
         pickData.map(function (player) {
           return <MatchUpCardList
-            player={player}
-            weekNum={weekNum}
-            selectedWeekMatchUps={selectedWeekMatchUps}
-            teamData={teamData}
-          />
+              player={player}
+              weekNum={weekNum}
+              selectedWeekMatchUps={selectedWeekMatchUps}
+              teamData={teamData}
+            />
         })
       }
     </div>

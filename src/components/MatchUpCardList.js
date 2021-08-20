@@ -1,19 +1,11 @@
 import MatchUpCard from "./MatchUpCard"
 import { Container, Row, Col } from "shards-react";
-import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
-
 function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
   const {name, weeklyPicks} = player;
-
-  // const selectedWeekMatchUps = matchUpData.find(function (singleWeekMatchUps) {
-  //   return singleWeekMatchUps.weekNum === weekNum;
-  // });
 
   const selectedWeekPicks = weeklyPicks.find(function (singleWeekPicks) {
     return singleWeekPicks.weekNum === weekNum;
   });
-
-  console.log(selectedWeekPicks);
 
   const joinMatchUpJsonData = (targetJson, targetJsonJoinKey, targetJsonWriteKey, matchingJson, matchingJsonJoinKey, matchingJsonWriteKey) => {
     Object.keys(targetJson.matchUps)
@@ -68,10 +60,16 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
       "underdogTeamName"
     );
   }
-
+  
   return (
-    <Container fluid>
-      <Row form>
+    <Container fluid style={{
+      "display": "flex",
+      "overflow-x": "auto",
+      "overflow-y": "hidden",
+      "height": "500px",
+      "width": "3000px"
+    }}>
+      <Row>
         <Col>
           <MatchUpCardListRowHeader playerName={name} weeklyScore={12} />
         </Col>
@@ -81,6 +79,7 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
               return (
                 <Col>
                   <MatchUpCard
+                    class="flex-column"
                     matchUp={matchUp}
                     pickData={
                       selectedWeekPicks ?
@@ -100,5 +99,7 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
     </Container>
   );
 }
+
+import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
 
 export default MatchUpCardList;

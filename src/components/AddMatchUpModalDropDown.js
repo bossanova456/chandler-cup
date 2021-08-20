@@ -1,18 +1,25 @@
 import {FormSelect} from "shards-react";
 
-function AddMatchUpModalDropDown({ teamData, defaultTeam, setAddMatchUpTeam }) {
+function AddMatchUpModalDropDown({ teamData, currentMatchUps, addMatchUpTeamId, setAddMatchUpTeamId }) {
   return (
     <FormSelect
       size="md"
+      value={addMatchUpTeamId}
+      placeholder={"Select team"}
       onChange={(event) => {
-        console.log("Selected: " + event.target.value);
-        setAddMatchUpTeam(event.target.value);
+        setAddMatchUpTeamId(event.target.value);
       }}
     >
       {
         teamData.map(function(team) {
           return <option
             value={team.teamId}
+            disabled={
+              currentMatchUps.matchUps.filter(function(currentMatchUp) {
+                return currentMatchUp.favoredTeamId === team.teamId
+                || currentMatchUp.underdogTeamId === team.teamId;
+              })[0]
+            }
           >
             {team.teamName}
           </option>

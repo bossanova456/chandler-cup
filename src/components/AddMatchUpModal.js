@@ -6,12 +6,15 @@ function AddMatchUpModal({
   showModal,
   toggleModal,
   weekNum,
-  selectedWeekMatchUps,
+  currentMatchUps,
   teamData,
-  addMatchUp
+  addMatchUpById
 }) {
-  const [ addMatchUpFavoredTeam, setAddMatchUpFavoredTeam ] = useState();
-  const [ addMatchUpUnderdogTeam, setAddMatchUpUnderdogTeam ] = useState();
+  // TODO: Properly select defaults based on available teams
+  const defaultFavoredTeamId = teamData[20].teamId;
+  const defaultUnderdogTeamId = teamData[21].teamId;
+  const [ addMatchUpFavoredTeamId, setAddMatchUpFavoredTeamId ] = useState(defaultFavoredTeamId);
+  const [ addMatchUpUnderdogTeamId, setAddMatchUpUnderdogTeamId ] = useState(defaultUnderdogTeamId);
 
   return (
     <Modal open={showModal} toggle={toggleModal}>
@@ -20,19 +23,22 @@ function AddMatchUpModal({
         <p>Select Favored Team</p>
         <AddMatchUpModalDropDown
           teamData={teamData}
-          defaultTeam={teamData[0]}
-          setAddMatchUpTeam={setAddMatchUpFavoredTeam}
+          currentMatchUps={currentMatchUps}
+          addMatchUpTeamId={addMatchUpFavoredTeamId}
+          setAddMatchUpTeamId={setAddMatchUpFavoredTeamId}
         />
         <p>Select Underdog Team</p>
         <AddMatchUpModalDropDown
           teamData={teamData}
-          defaultTeam={teamData[1]}
-          setAddMatchUpTeam={setAddMatchUpUnderdogTeam}
+          currentMatchUps={currentMatchUps}
+          addMatchUpTeamId={addMatchUpUnderdogTeamId}
+          setAddMatchUpTeamId={setAddMatchUpUnderdogTeamId}
         />
         <Button
           size="sm"
           onClick={() => {
-            addMatchUp(addMatchUpFavoredTeam, addMatchUpUnderdogTeam);
+            // TODO: Update new default teams for next time the modal is opened
+            addMatchUpById(addMatchUpFavoredTeamId, addMatchUpUnderdogTeamId);
             toggleModal();
           }}
         >
