@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Package lock
+package-lock.json
+
+# Intellij files
+.idea/
+
+# Enzyme snapshots
+src/test/__snapshots__/
