@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import {
   Card,
@@ -26,6 +26,7 @@ function MatchUpCard({ matchUp, pickData }) {
       <CardBody>
         <CardTitle>{favoredTeamName + " - " + underdogTeamName}</CardTitle>
         <FormRadio
+          id="selectFavoredTeam"
           name={matchUp.matchUpId}
           checked={isFavoredSelected}
           onChange={() => {
@@ -35,6 +36,7 @@ function MatchUpCard({ matchUp, pickData }) {
           Favored
         </FormRadio>
         <FormRadio
+          id="selectUnderdogTeam"
           name={matchUp.matchUpId}
           checked={!isFavoredSelected}
           onChange={() => {
