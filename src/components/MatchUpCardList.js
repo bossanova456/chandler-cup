@@ -1,3 +1,4 @@
+import React from 'react';
 import MatchUpCard from "./MatchUpCard"
 import { Container, Row, Col } from "shards-react";
 function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
@@ -60,7 +61,7 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
       "underdogTeamName"
     );
   }
-  
+
   return (
     <Container fluid style={{
       "display": "flex",
@@ -75,9 +76,9 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
         </Col>
         {
           selectedWeekMatchUps ?
-            selectedWeekMatchUps.matchUps.map(function(matchUp) {
+            selectedWeekMatchUps.matchUps.map(function(matchUp, index) {
               return (
-                <Col>
+                <Col key={index}>
                   <MatchUpCard
                     class="flex-column"
                     matchUp={matchUp}
