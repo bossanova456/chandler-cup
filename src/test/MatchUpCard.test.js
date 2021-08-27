@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from "react-test-renderer";
 import MatchUpCard from "../components/MatchUpCard";
 
 import {CardBody, FormRadio} from "shards-react";
