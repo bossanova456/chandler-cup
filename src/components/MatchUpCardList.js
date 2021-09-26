@@ -1,6 +1,8 @@
 import React from 'react';
-import MatchUpCard from "./MatchUpCard"
 import { Container, Row, Col } from "shards-react";
+import MatchUpCard from "./MatchUpCard";
+import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
+
 function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
   const {name, weeklyPicks} = player;
 
@@ -100,7 +102,5 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
     </Container>
   );
 }
-
-import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
 
 export default MatchUpCardList;
