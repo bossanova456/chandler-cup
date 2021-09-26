@@ -6,7 +6,7 @@ export const matchUpData = [
         "matchUpId": "0101",
         "favoredTeamId": "01",
         "underdogTeamId": "02",
-        "game_start_ts": "01-01-1970 00:00:00.000"
+        "game_start_ts": "09-30-2021 13:00:00.000"
       },
       {
         "matchUpId": "0102",

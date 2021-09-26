@@ -20,9 +20,12 @@ function MatchUpCard({ matchUp, pickData }) {
     selectedPick === "favored" || (selectedPick === undefined && pickData && pickData.pick === "favored")
   );
 
+  const options = { dateStyle: "short", timeStyle: "short" };
+  const formatter = new Intl.DateTimeFormat("en-US", options);
+
   return (
     <Card style={{ maxWidth: "200px" }}>
-      <CardHeader>Game Time</CardHeader>
+      <CardHeader>{formatter.format(Date.parse(matchUp.game_start_ts))}</CardHeader>
       <CardBody>
         <CardTitle>{favoredTeamName + " - " + underdogTeamName}</CardTitle>
         <FormRadio
