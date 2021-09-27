@@ -4,6 +4,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
+  CardSubtitle,
   CardBody,
   CardFooter,
   FormRadio,
@@ -14,7 +15,7 @@ function MatchUpCard({ matchUp, pickData }) {
   const [ pick, setPick ] = useState(pickData ? pickData.pick : undefined);
   const [ selectedPick, setSelectedPick ] = useState();
 
-  const { favoredTeamName, underdogTeamName } = matchUp;
+  const { favoredTeamName, underdogTeamName, line, favoredScore, underdogScore, isFinal } = matchUp;
 
   const isFavoredSelected = (
     selectedPick === "favored" || (selectedPick === undefined && pickData && pickData.pick === "favored")
@@ -25,9 +26,16 @@ function MatchUpCard({ matchUp, pickData }) {
 
   return (
     <Card style={{ maxWidth: "200px" }}>
-      <CardHeader>{formatter.format(Date.parse(matchUp.game_start_ts))}</CardHeader>
+      <CardHeader>
+        {
+          (favoredScore ? favoredScore : "0") + "-" + (underdogScore ? underdogScore : "0") + " " +
+          (parseInt(favoredScore) - parseInt(underdogScore) > parseInt(line) ? favoredTeamName : underdogTeamName) + " " +
+          (isFinal ? "FINAL" : "")
+        }
+      </CardHeader>
       <CardBody>
-        <CardTitle>{favoredTeamName + " - " + underdogTeamName}</CardTitle>
+        <CardTitle>{favoredTeamName + " (-" + (line ? line : "0") + ") vs " + underdogTeamName}</CardTitle>
+        <CardSubtitle>{formatter.format(Date.parse(matchUp.game_start_ts))}</CardSubtitle>
         <FormRadio
           id="selectFavoredTeam"
           name={matchUp.matchUpId}
