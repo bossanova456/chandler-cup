@@ -1,5 +1,5 @@
-import {Button, Modal, ModalBody, ModalHeader} from "shards-react";
-import {useState} from "react";
+import {Button, FormInput, Modal, ModalBody, ModalHeader} from "shards-react";
+import React, {useState} from "react";
 import AddMatchUpModalDropDown from "./AddMatchUpModalDropDown";
 
 function AddMatchUpModal({
@@ -13,6 +13,7 @@ function AddMatchUpModal({
   // TODO: Properly select defaults based on available teams
   const defaultFavoredTeamId = teamData[20].teamId;
   const defaultUnderdogTeamId = teamData[21].teamId;
+  let line = 0;
   const [ addMatchUpFavoredTeamId, setAddMatchUpFavoredTeamId ] = useState(defaultFavoredTeamId);
   const [ addMatchUpUnderdogTeamId, setAddMatchUpUnderdogTeamId ] = useState(defaultUnderdogTeamId);
 
@@ -34,11 +35,19 @@ function AddMatchUpModal({
           addMatchUpTeamId={addMatchUpUnderdogTeamId}
           setAddMatchUpTeamId={setAddMatchUpUnderdogTeamId}
         />
+        <p>Set Line</p>
+        <FormInput
+          onChange={(event) => {
+            line = event.target.value;
+          }}
+        >
+        </FormInput>
         <Button
           size="sm"
+          disabled={line === undefined}
           onClick={() => {
             // TODO: Update new default teams for next time the modal is opened
-            addMatchUpById(addMatchUpFavoredTeamId, addMatchUpUnderdogTeamId);
+            addMatchUpById(addMatchUpFavoredTeamId, addMatchUpUnderdogTeamId, line);
             toggleModal();
           }}
         >

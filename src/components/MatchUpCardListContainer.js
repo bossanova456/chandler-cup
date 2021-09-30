@@ -28,15 +28,16 @@ function MatchUpCardListContainer() {
     setShowAddMatchUpModal(!showAddMatchUpModal);
   }
 
-  function addMatchUpById(favoredTeamId, underdogTeamId) {
-    // TODO: properly generate match up ID
-    // console.log("Adding team IDs: " + favoredTeamId + " | " + underdogTeamId);
+  function addMatchUpById(favoredTeamId, underdogTeamId, line) {
     selectedWeekMatchUps.matchUps = [
       ...selectedWeekMatchUps.matchUps,
       {
-        "matchUpId": "" + weekNum + selectedWeekMatchUps.matchUps.length,
+        // Always inserting at end, so use old length of match ups array for new ID
+        "matchUpId": weekNum.toString().padStart(2, '0') + selectedWeekMatchUps.matchUps.length.toString().padStart(2, '0'),
         "favoredTeamId": favoredTeamId,
         "underdogTeamId": underdogTeamId,
+        "line": line,
+        "isFinal": false,
         "game_start_ts": "01-01-1970 00:00:00.000"
       }
     ];
