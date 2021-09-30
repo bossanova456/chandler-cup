@@ -44,7 +44,7 @@ function MatchUpCard({ matchUp, pickData }) {
             setSelectedPick("favored")
           }}
         >
-          Favored
+          {favoredTeamName}
         </FormRadio>
         <FormRadio
           id="selectUnderdogTeam"
@@ -54,7 +54,7 @@ function MatchUpCard({ matchUp, pickData }) {
             setSelectedPick("underdog")
           }}
         >
-          Underdog
+          {underdogTeamName}
         </FormRadio>
       </CardBody>
       <CardFooter>
@@ -62,10 +62,16 @@ function MatchUpCard({ matchUp, pickData }) {
           size="sm"
           onClick={() => setPick(selectedPick)}
           disabled={
+            matchUp.isFinal ||
             !(selectedPick !== undefined && pick !== selectedPick)
           }
         >
           Submit?
+        </Button>
+        <Button
+          size="sm"
+        >
+          Update?
         </Button>
       </CardFooter>
     </Card>
