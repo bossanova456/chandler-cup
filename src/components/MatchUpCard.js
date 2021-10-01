@@ -11,7 +11,7 @@ import {
   Button
 } from "shards-react";
 
-function MatchUpCard({ matchUp, pickData }) {
+function MatchUpCard({ matchUp, pickData, toggleUpdateMatchUpScoreModal }) {
   const [ pick, setPick ] = useState(pickData ? pickData.pick : undefined);
   const [ selectedPick, setSelectedPick ] = useState();
 
@@ -70,6 +70,9 @@ function MatchUpCard({ matchUp, pickData }) {
         </Button>
         <Button
           size="sm"
+          onClick={() => {
+            toggleUpdateMatchUpScoreModal(matchUp.matchUpId);
+          }}
         >
           Update?
         </Button>

@@ -1,4 +1,4 @@
-import {Button, FormInput, Modal, ModalBody, ModalHeader} from "shards-react";
+import {Button, FormInput, Modal, ModalBody, ModalFooter, ModalHeader} from "shards-react";
 import React, {useState} from "react";
 import AddMatchUpModalDropDown from "./AddMatchUpModalDropDown";
 
@@ -42,6 +42,8 @@ function AddMatchUpModal({
           }}
         >
         </FormInput>
+      </ModalBody>
+      <ModalFooter>
         <Button
           size="sm"
           disabled={line === undefined}
@@ -53,7 +55,7 @@ function AddMatchUpModal({
         >
           Add Match Up
         </Button>
-      </ModalBody>
+      </ModalFooter>
     </Modal>
   );
 }

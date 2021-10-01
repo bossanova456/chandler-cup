@@ -3,7 +3,7 @@ import { Container, Row, Col } from "shards-react";
 import MatchUpCard from "./MatchUpCard";
 import MatchUpCardListRowHeader from "./MatchUpCardListRowHeader";
 
-function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
+function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData, toggleUpdateMatchUpScoreModal }) {
   const matchUpCardWidth = 200;
   const {name, weeklyPicks} = player;
 
@@ -126,6 +126,7 @@ function MatchUpCardList({ player, weekNum, selectedWeekMatchUps, teamData }) {
                   <MatchUpCard
                     class="flex-column"
                     matchUp={matchUp}
+                    toggleUpdateMatchUpScoreModal={toggleUpdateMatchUpScoreModal}
                     pickData={
                       // Picks may not be set
                       selectedWeekPicks ?
