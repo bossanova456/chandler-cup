@@ -1,10 +1,12 @@
 import MatchupTableRow from "./MatchupTableRow";
 
 import { matchUpData } from "../MatchUpData";
-import { teamData } from "../TeamData";
+import { pickData } from "../PickData";
 
-function getTeamName(teamId) {
-	return teamData.filter(team => team.teamId === teamId)[0].teamName;
+const getMatchupPick = (matchupId) => {
+	return pickData[0].weeklyPicks.filter(week => week.weekNum === 0)[0]
+		.matchUps.filter(matchup => matchup.matchUpId === matchupId)[0]
+		.pick;
 }
 
 const MatchupTable = () => {
@@ -14,17 +16,18 @@ const MatchupTable = () => {
 				<thead>
 					<tr>
 						<th>Favored</th>
-						<th>Line</th>
 						<th>Underdog</th>
+						<th>Line</th>
+						<th>Pick</th>
+						<th>Outcome</th>
 					</tr>
 				</thead>
 				<tbody>
 					{
 						matchUpData[0].matchUps.map(matchup => {
 							return <MatchupTableRow 
-										favoredTeamName={getTeamName(matchup.favoredTeamId)}
-										underdogTeamName={getTeamName(matchup.underdogTeamId)}
-										line={matchup.line}
+										matchup={matchup}
+										userPick={getMatchupPick(matchup.favoredTeamId + matchup.underdogTeamId)}
 									/>
 						})
 					}

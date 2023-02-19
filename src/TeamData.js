@@ -2,151 +2,181 @@ export const teamData = [
   {
     "teamId": "01",
     "teamRegion": "Atlanta",
-    "teamName": "Falcons"
+    "teamName": "Falcons",
+    "teamRegionCode": "ATL"
   },
   {
     "teamId": "02",
     "teamRegion": "Tampa Bay",
-    "teamName": "Buccaneers"
+    "teamName": "Buccaneers",
+    "teamRegionCode": "TB"
   },
   {
     "teamId": "03",
     "teamRegion": "New England",
-    "teamName": "Patriots"
+    "teamName": "Patriots",
+    "teamRegionCode": "NE"
   },
   {
     "teamId": "04",
     "teamRegion": "Pittsburgh",
-    "teamName": "Steelers"
+    "teamName": "Steelers",
+    "teamRegionCode": "PIT"
   },
   {
     "teamId": "05",
     "teamRegion": "Philadelphia",
-    "teamName": "Eagles"
+    "teamName": "Eagles",
+    "teamRegionCode": "PHI"
   },
   {
     "teamId": "06",
     "teamRegion": "Green Bay",
-    "teamName": "Packers"
+    "teamName": "Packers",
+    "teamRegionCode": "GB"
   },
   {
     "teamId": "07",
     "teamRegion": "Chicago",
-    "teamName": "Bears"
+    "teamName": "Bears",
+    "teamRegionCode": "CHI"
   },
   {
     "teamId": "08",
     "teamRegion": "Seattle",
-    "teamName": "Seahawks"
+    "teamName": "Seahawks",
+    "teamRegionCode": "SEA"
   },
   {
     "teamId": "09",
     "teamRegion": "Las Vegas",
-    "teamName": "Raiders"
+    "teamName": "Raiders",
+    "teamRegionCode": "LV"
   },
   {
     "teamId": "10",
     "teamRegion": "Denver",
-    "teamName": "Broncos"
+    "teamName": "Broncos",
+    "teamRegionCode": "DEN"
   },
   {
     "teamId": "11",
     "teamRegion": "Minnesota",
-    "teamName": "Vikings"
+    "teamName": "Vikings",
+    "teamRegionCode": "MIN"
   },
   {
     "teamId": "12",
     "teamRegion": "Kansas City",
-    "teamName": "Chiefs"
+    "teamName": "Chiefs",
+    "teamRegionCode": "KC"
   },
   {
     "teamId": "13",
     "teamRegion": "Miami",
-    "teamName": "Dolphins"
+    "teamName": "Dolphins",
+    "teamRegionCode": "MIA"
   },
   {
     "teamId": "14",
     "teamRegion": "Washington",
-    "teamName": "Football Team"
+    "teamName": "Commanders",
+    "teamRegionCode": "WAS"
   },
   {
     "teamId": "15",
     "teamRegion": "New York",
-    "teamName": "Giants"
+    "teamName": "Giants",
+    "teamRegionCode": "NYG"
   },
   {
     "teamId": "16",
     "teamRegion": "Buffalo",
-    "teamName": "Bills"
+    "teamName": "Bills",
+    "teamRegionCode": "BUF"
   },
   {
     "teamId": "17",
     "teamRegion": "New Orleans",
-    "teamName": "Saints"
+    "teamName": "Saints",
+    "teamRegionCode": "NO"
   },
   {
     "teamId": "18",
     "teamRegion": "Arizona",
-    "teamName": "Cardinals"
+    "teamName": "Cardinals",
+    "teamRegionCode": "AZ"
   },
   {
     "teamId": "19",
     "teamRegion": "Cleveland",
-    "teamName": "Browns"
+    "teamName": "Browns",
+    "teamRegionCode": "CLE"
   },
   {
     "teamId": "20",
     "teamRegion": "Baltimore",
-    "teamName": "Ravens"
+    "teamName": "Ravens",
+    "teamRegionCode": "BAL"
   },
   {
     "teamId": "21",
     "teamRegion": "Indianapolis",
-    "teamName": "Colts"
+    "teamName": "Colts",
+    "teamRegionCode": "IND"
   },
   {
     "teamId": "22",
     "teamRegion": "Detroit",
-    "teamName": "Lions"
+    "teamName": "Lions",
+    "teamRegionCode": "DET"
   },
   {
     "teamId": "23",
     "teamRegion": "Jacksonville",
-    "teamName": "Jaguars"
+    "teamName": "Jaguars",
+    "teamRegionCode": "JAX"
   },
   {
     "teamId": "24",
     "teamRegion": "Tennessee",
-    "teamName": "Titans"
+    "teamName": "Titans",
+    "teamRegionCode": "TEN"
   },
   {
     "teamId": "25",
     "teamRegion": "New York",
-    "teamName": "Jets"
+    "teamName": "Jets",
+    "teamRegionCode": "NYJ"
   },
   {
     "teamId": "26",
     "teamRegion": "Cincinnati",
-    "teamName": "Bengals"
+    "teamName": "Bengals",
+    "teamRegionCode": "CIN"
   },
   {
     "teamId": "27",
     "teamRegion": "Houston",
-    "teamName": "Texans"
+    "teamName": "Texans",
+    "teamRegionCode": "HOU"
   },
   {
     "teamId": "28",
     "teamRegion": "Los Angeles",
-    "teamName": "Chargers"
+    "teamName": "Chargers",
+    "teamRegionCode": "LAC"
   },
   {
     "teamId": "29",
     "teamRegion": "Los Angeles",
-    "teamName": "Rams"
+    "teamName": "Rams",
+    "teamRegionCode": "LAR"
   },
   {
     "teamId": "30",
     "teamRegion": "Dallas",
-    "teamName": "Cowboys"
+    "teamName": "Cowboys",
+    "teamRegionCode": "DAL"
   }
 ]
