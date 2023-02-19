@@ -111,3 +111,6 @@ package-lock.json
 
 # Enzyme snapshots
 src/test/__snapshots__/
+
+# VSCode files
+.vscode/

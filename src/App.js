@@ -1,12 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "shards-ui/dist/css/shards.min.css";
 import React from 'react';
 
-import MatchUpCardListContainer from "./components/MatchUpCardListContainer";
+import MatchupTable from "./components/MatchupTable";
 
 function App() {
   return (
-    <MatchUpCardListContainer />
+    <MatchupTable />
   );
 }
 
