@@ -23,7 +23,7 @@ function getOutcomeString(matchup) {
 	}
 }
 
-const MatchupTableRow = ({ matchup, userPick, selectPick }) => {
+const MatchupTableRow = ({ matchup, userPick }) => {
 	const [ pick, setPick ] = useState(userPick);
 	
 	return (
@@ -38,7 +38,7 @@ const MatchupTableRow = ({ matchup, userPick, selectPick }) => {
 						favoredRegionCode={getRegionCode(matchup.favoredTeamId)}
 						underdogRegionCode={getRegionCode(matchup.underdogTeamId)}
 						pick={pick}
-						selectPick={selectPick}
+						selectPick={(event) => setPick(event.target.value)}
 					/>
 				</td>
 				<td>{getOutcomeString(matchup)}</td>
