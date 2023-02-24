@@ -18,14 +18,14 @@ const MatchupTable = () => {
 						<th>Favored</th>
 						<th>Underdog</th>
 						<th>Line</th>
-						<th>Pick</th>
 						<th>Outcome</th>
 					</tr>
 				</thead>
 				<tbody>
 					{
-						matchUpData[0].matchUps.map(matchup => {
+						matchUpData[0].matchUps.map((matchup, i) => {
 							return <MatchupTableRow 
+										key={"" + i}
 										matchup={matchup}
 										userPick={getMatchupPick(matchup.favoredTeamId + matchup.underdogTeamId)}
 									/>
