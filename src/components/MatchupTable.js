@@ -1,7 +1,8 @@
 import MatchupTableRow from "./MatchupTableRow";
 
-import { matchUpData } from "../MatchUpData";
 import { pickData } from "../PickData";
+
+import { useEffect, useState } from "react";
 
 const getMatchupPick = (matchupId) => {
 	return pickData[0].weeklyPicks.filter(week => week.weekNum === 0)[0]
@@ -10,6 +11,46 @@ const getMatchupPick = (matchupId) => {
 }
 
 const MatchupTable = () => {
+	const [ matchups, setMatchups ] = useState([]);
+	const [ picks, setPicks ] = useState({});
+	const [ year, setYear ] = useState('');
+	const [ week, setWeek ] = useState('01');
+	const [ currentSeason, setCurrentSeason ] = useState({});
+
+	useEffect(() => {
+		fetch('http://192.168.1.51:3001/currentSeason')
+			.then(response => response.json())
+			.then(data => {
+				setCurrentSeason(data);
+				setYear(data.year);
+				setWeek(data.week);
+			});
+	}, []);
+
+	// Should use current year data from call
+	useEffect(() => {
+		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week)
+			.then(response => response.json())
+			.then(data => {
+				setMatchups(data);
+			}, () => {
+				console.error("Error: could not get matchup data (year: " + year + ", week: " + week + ")");
+			});
+
+		fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + week)
+			.then(response => response.json())
+			.then(data => {
+				setPicks(data);
+			}, () => {
+				console.error("Error: pick data not found (year: " + year + ", week: " + week + ")");
+			});
+	}, [ year, week ]);
+
+	// Should use current year data from call
+	useEffect(() => {
+		
+	}, [ year, week ]);
+	
 	return (
 		<>
 			<table className="table table-hover">
@@ -23,7 +64,7 @@ const MatchupTable = () => {
 				</thead>
 				<tbody>
 					{
-						matchUpData[0].matchUps.map((matchup, i) => {
+						matchups.map((matchup, i) => {
 							return <MatchupTableRow 
 										key={"" + i}
 										matchup={matchup}
