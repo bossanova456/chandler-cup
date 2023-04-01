@@ -1,19 +1,11 @@
 import PickSelectRadioGroup from "./PickSelectRadioGroup";
 
-import { teamData } from "../TeamData";
-
-function getTeamName(teamId) {
-	return teamData.filter(team => team.teamId === teamId)[0].teamRegion;
+function getUserPickString(pick) {
+	if (pick) return pick.pick;
+	else return "not set";
 }
 
-function getRegionCode(teamId) {
-	return teamData.filter(team => team.teamId === teamId)[0].teamRegionCode;
-}
-
-function getOutcomeString(matchup) {
-	const favoredTeamName = getTeamName(matchup.favoredTeamId);
-	const underdogTeamName = getTeamName(matchup.underdogTeamId);
-
+function getOutcomeString(matchup, favoredTeamName, underdogTeamName) {
 	if (matchup.favoredScore === matchup.underdogScore) {
 		return "" + matchup.favoredScore + " - " + matchup.underdogScore + " TIE";
 	} else {
@@ -22,14 +14,15 @@ function getOutcomeString(matchup) {
 	}
 }
 
-const MatchupTableRow = ({ matchup, userPick }) => {
+const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam }) => {
 	return (
 		<>
 			<tr>
-				<td>{getTeamName(matchup.favoredTeamId)}</td>
-				<td>{getTeamName(matchup.underdogTeamId)}</td>
+				<td>{favoredTeam.teamName}</td>
+				<td>{underdogTeam.teamName}</td>
 				<td>-{matchup.line}</td>
-				<td>{getOutcomeString(matchup)}</td>
+				<td>{getOutcomeString(matchup, favoredTeam.teamName, underdogTeam.teamName)}</td>
+				<td>{getUserPickString(userPick)}</td>
 			</tr>
 		</>
 	)
