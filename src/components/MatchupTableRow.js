@@ -1,7 +1,7 @@
 import PickSelectRadioGroup from "./PickSelectRadioGroup";
 
 function getUserPickString(pick) {
-	if (pick) return pick.pick;
+	if (pick && pick.pick) return pick.pick;
 	else return "not set";
 }
 
@@ -14,7 +14,7 @@ function getOutcomeString(matchup, favoredTeamName, underdogTeamName) {
 	}
 }
 
-const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam }) => {
+const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateUnsavedPicks }) => {
 	return (
 		<>
 			<tr>
@@ -23,6 +23,7 @@ const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam }) => {
 				<td>-{matchup.line}</td>
 				<td>{getOutcomeString(matchup, favoredTeam.teamName, underdogTeam.teamName)}</td>
 				<td>{getUserPickString(userPick)}</td>
+				<td><PickSelectRadioGroup favoredTeam={favoredTeam} underdogTeam={underdogTeam} userPick={userPick} updateUnsavedPicks={updateUnsavedPicks} /></td>
 			</tr>
 		</>
 	)

@@ -1,17 +1,23 @@
-import { useState } from "react";
-
-const PickSelectRadioGroup = ({ favoredRegionCode, underdogRegionCode, favoredTeamId, underdogTeamId, userPick }) => {
-	const [ pick, setPick ] = useState("favored");
+const PickSelectRadioGroup = ({ favoredTeam, underdogTeam, userPick, updateUnsavedPicks }) => {
+	const matchupId = "" + favoredTeam.teamId + underdogTeam.teamId;
 
 	const changeHandler = (e) => {
-		setPick(e.target.value);
+		updateUnsavedPicks(matchupId, {
+			"pick": e.target.value,
+			"last_upd_ts": "01-01-1970 01:00:00.000"
+		});
 	}
 
 	return (
 		<>
-
-			{favoredRegionCode}<input type="radio" value="favored" isSelected={pick === "favored"} onChange={changeHandler} name="pick" />
-			<input type="radio" value="underdog" isSelected={pick === "underdog"} onChange={changeHandler} name="pick" />{underdogRegionCode}
+			<div>
+				<input type="radio" value="favored" onChange={changeHandler} checked={userPick?.pick === "favored"} name={matchupId} id="favored" />
+				<label htmlFor="favored">{favoredTeam.teamRegionCode}</label>
+			</div>
+			<div>
+				<input type="radio" value="underdog" onChange={changeHandler} checked={userPick?.pick === "underdog"} name={matchupId} id="underdog" />
+				<label htmlFor="underdog">{underdogTeam.teamRegionCode}</label>
+			</div>
 		</>
 	);
 }
