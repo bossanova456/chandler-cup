@@ -15,13 +15,15 @@ const MatchupContainer = () => {
 	const [ currentSeason, setCurrentSeason ] = useState({});
 	const [ currentUser, setCurrentUser ] = useState('sharon');
 	const [ schedule, setSchedule ] = useState({});
+	const [ weekStart, setWeekStart ] = useState();
+	const [ weekEnd, setWeekEnd ] = useState();
 
 	const [ modalOpen, setModalOpen ] = useState(false);
 
 	const addMatchup = (matchupId, matchup) => {
 		console.log("Add Matchup function entered - matchupId: " + matchupId + " | " + JSON.stringify(matchup));
 
-		fetch('http://localhost:3001/matchups/year/' + year + '/week/' + week + '/matchup/' + matchupId, {
+		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week + '/matchup/' + matchupId, {
 			method: "POST",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(matchup)
@@ -61,16 +63,23 @@ const MatchupContainer = () => {
 	// Get schedule
 	useEffect(() => {
 		if (year) {
-			fetch('http://localhost:3001/schedule/year/' + year)
+			fetch('http://192.168.1.51:3001/schedule/year/' + year, {
+				cache: 'default'
+			})
 				.then(response => response.json())
 				.then(scheduleData => {
 					setSchedule(scheduleData);
 					console.log("Schedule: " + JSON.stringify(scheduleData));
+
+					if (week) {
+						setWeekStart(new Date(scheduleData[week]));
+						setWeekEnd(new Date(new Date(scheduleData[week]).setDate(new Date(scheduleData[week]).getDate() + 7)));
+					}
 				}, err => {
 					console.error(err);
 				})
 		}
-	}, [ year ]);
+	}, [ year, week ]);
 
 	// Get teams
 	useEffect(() => {
@@ -98,6 +107,7 @@ const MatchupContainer = () => {
 	// Should use current year data from call
 	useEffect(() => {
 		if (year && week) {
+			// Get matchups
 			fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week)
 				.then(response => response.json())
 				.then(data => {
@@ -106,6 +116,7 @@ const MatchupContainer = () => {
 					console.error("Error: could not get matchup data (year: " + year + ", week: " + week + ")");
 				});
 
+			// Get picks
 			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + week)
 				.then(response => response.json())
 				.then(data => {
@@ -125,8 +136,9 @@ const MatchupContainer = () => {
 				isModalOpen={modalOpen}
 				setIsModalOpen={setModalOpen}
 				teams={teams}
+				weekStart={weekStart}
+				weekEnd={weekEnd}
 				addMatchup={addMatchup}
-				weekStart={schedule[week]}
 			/>
 
 			<MatchupTable 

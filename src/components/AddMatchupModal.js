@@ -8,14 +8,11 @@ import { useState } from "react";
 
 import 'react-datetime-picker/dist/DateTimePicker.css';
 
-const AddMatchupModal = ({ isModalOpen, setIsModalOpen, teams, weekStart, addMatchup }) => {
+const AddMatchupModal = ({ isModalOpen, setIsModalOpen, teams, weekStart, weekEnd, addMatchup }) => {
 	const [ selectedFavoredTeamId, setSelectedFavoredTeamId ] = useState('');
 	const [ selectedUnderdogTeamId, setSelectedUnderdogTeamId ] = useState('');
 	const [ selectedLine, setSelectedLine ] = useState();
-	const [ date, setDate ] = useState(new Date(new Date(weekStart)));
-
-	const weekEnd = new Date(new Date(weekStart).setDate(new Date(weekStart).getDate() + 7));
-	console.log("week end: " + weekEnd.toLocaleString());
+	const [ date, setDate ] = useState(weekStart);
 
 	const addMatchupButtonClick = () => {
 		if (setSelectedFavoredTeamId !== '' && setSelectedUnderdogTeamId !== '' && selectedLine && date) {	
@@ -24,7 +21,7 @@ const AddMatchupModal = ({ isModalOpen, setIsModalOpen, teams, weekStart, addMat
 					"favoredTeamId": selectedFavoredTeamId,
 					"underdogTeamId": selectedUnderdogTeamId,
 					"line": selectedLine >= 0 ? selectedLine : -selectedLine,
-					"game_start_ts": date.toString(),
+					"game_start_ts": date.toLocaleString('en-US'),
 					"favoredScore": 0,
 					"underdogScore": 0,
 					"isFinal": false
@@ -91,10 +88,10 @@ const AddMatchupModal = ({ isModalOpen, setIsModalOpen, teams, weekStart, addMat
 
 				<DateTimePicker
 					className="react-datetime-picker"
-					minDate={new Date(weekStart)}
+					minDate={weekStart}
 					maxDate={weekEnd}
 					onChange={(d) => setDate(d)}
-					value={date}
+					value={date ? date : weekStart}
 				/>
 
 			</Modal.Body>
