@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 
-import MatchupTable from "./components/MatchupTable";
+import MatchupContainer from './components/MatchupContainer';
 
 function App() {
   return (
-    <MatchupTable />
+    <MatchupContainer />
   );
 }
 
