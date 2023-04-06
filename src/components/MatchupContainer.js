@@ -1,5 +1,6 @@
 import MatchupTable from "./MatchupTable";
 import AddMatchupModal from "./AddMatchupModal";
+import UpdateMatchupScoreModal from "./UpdateMatchupScoreModal";
 
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
@@ -18,7 +19,8 @@ const MatchupContainer = () => {
 	const [ weekStart, setWeekStart ] = useState();
 	const [ weekEnd, setWeekEnd ] = useState();
 
-	const [ modalOpen, setModalOpen ] = useState(false);
+	const [ addMatchupModalOpen, setAddMatchupModalOpen ] = useState(false);
+	const [ updateMatchupScoreModalOpen, setUpdateMatchupScoreModalOpen ] = useState(false);
 
 	const addMatchup = (matchupId, matchup) => {
 		console.log("Add Matchup function entered - matchupId: " + matchupId + " | " + JSON.stringify(matchup));
@@ -131,14 +133,21 @@ const MatchupContainer = () => {
 	return (
 		<>
 			<Button onClick={savePicks}>Save Picks</Button>
-			<Button onClick={() => setModalOpen(true)}>Add Matchup</Button>
+			<Button onClick={() => setAddMatchupModalOpen(true)}>Add Matchup</Button>
+
 			<AddMatchupModal
-				isModalOpen={modalOpen}
-				setIsModalOpen={setModalOpen}
+				isModalOpen={addMatchupModalOpen}
+				setIsModalOpen={setAddMatchupModalOpen}
 				teams={teams}
 				weekStart={weekStart}
 				weekEnd={weekEnd}
 				addMatchup={addMatchup}
+			/>
+
+			<UpdateMatchupScoreModal
+				isModalOpen={updateMatchupScoreModalOpen}
+				setIsModalOpen={setUpdateMatchupScoreModalOpen}
+				teams={teams}
 			/>
 
 			<MatchupTable 
@@ -147,6 +156,7 @@ const MatchupContainer = () => {
 				unsavedPicks={savedPicks}
 				user={currentUser}
 				updateUnsavedPicks={updateUnsavedPicks}
+				setScoreUpdateModalOpen={setUpdateMatchupScoreModalOpen}
 			/>
 		</>
 	);

@@ -1,4 +1,5 @@
 import PickSelectRadioGroup from "./PickSelectRadioGroup";
+import Button from "react-bootstrap/Button";
 
 function getUserPickString(pick) {
 	if (pick && pick.pick) return pick.pick;
@@ -14,7 +15,7 @@ function getOutcomeString(matchup, favoredTeamName, underdogTeamName) {
 	}
 }
 
-const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateUnsavedPicks }) => {
+const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateUnsavedPicks, setScoreUpdateModalOpen }) => {
 	return (
 		<>
 			<tr>
@@ -25,6 +26,7 @@ const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateU
 				<td>{getOutcomeString(matchup, favoredTeam.teamName, underdogTeam.teamName)}</td>
 				<td>{getUserPickString(userPick)}</td>
 				<td><PickSelectRadioGroup favoredTeam={favoredTeam} underdogTeam={underdogTeam} userPick={userPick} updateUnsavedPicks={updateUnsavedPicks} /></td>
+				<td><Button variant="primary" disabled={false} onClick={() => setScoreUpdateModalOpen(true)}>Update</Button></td>
 			</tr>
 		</>
 	)
