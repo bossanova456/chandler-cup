@@ -1,0 +1,17 @@
+name: 'Update & Close Issue'
+
+on:
+	pull_request:
+		types:
+      - opened
+			- closed
+
+jobs:
+  update-issue:
+    runs-on: self-hosted
+    steps:
+      - name: Get Issue Number
+        if: ${{ github.event.pull_request.opened }}
+        shell: bash
+        run: |
+          echo ${{ github.event.pull_request.title }}
