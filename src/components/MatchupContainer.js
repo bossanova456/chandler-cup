@@ -19,23 +19,52 @@ const MatchupContainer = () => {
 	const [ weekStart, setWeekStart ] = useState();
 	const [ weekEnd, setWeekEnd ] = useState();
 
+	const [ selectedMatchupId, setSelectedMatchupId ] = useState('');
+	const [ selectedMatchup, setSelectedMatchup ] = useState({});
+
 	const [ addMatchupModalOpen, setAddMatchupModalOpen ] = useState(false);
 	const [ updateMatchupScoreModalOpen, setUpdateMatchupScoreModalOpen ] = useState(false);
+
+	///////////////////////////////////////////////////////////////////
+
+	const writeMatchupData = (matchupId, matchupData) => {
+		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week + '/matchup/' + matchupId, {
+			method: "POST",
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify(matchupData[matchupId])
+		})
+			.then(data => {
+				setSavedMatchups(matchupData);
+			}, (err) => {
+				console.error(err);
+			})
+	}
 
 	const addMatchup = (matchupId, matchup) => {
 		console.log("Add Matchup function entered - matchupId: " + matchupId + " | " + JSON.stringify(matchup));
 
-		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week + '/matchup/' + matchupId, {
-			method: "POST",
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify(matchup)
-		})
-			.then(data => {
-				console.log("Saved new matchup: " + JSON.stringify(data));
-				setSavedMatchups({...savedMatchups, matchupId: matchup})
-			}, (err) => {
-				console.error(err);
-			})
+		const matchupDataCopy = {...savedMatchups};
+		matchupDataCopy[matchupId] = matchup;
+
+		writeMatchupData(matchupId, matchupDataCopy);
+	}
+
+	const selectMatchup = (matchupId) => {
+		setSelectedMatchupId(matchupId);
+		setSelectedMatchup(savedMatchups[matchupId])
+		setUpdateMatchupScoreModalOpen(true);
+	}
+
+	const updateScore = (favoredTeamScore, underdogTeamScore) => {
+		console.log("Entering update score method: " + selectedMatchupId + " | " + favoredTeamScore + " | " + underdogTeamScore);
+
+		const updatedScoreMatchupData = { ...savedMatchups };
+
+		updatedScoreMatchupData[selectedMatchupId].favoredScore = favoredTeamScore;
+		updatedScoreMatchupData[selectedMatchupId].underdogScore = underdogTeamScore;
+
+		writeMatchupData(selectedMatchupId, updatedScoreMatchupData);
+		setUpdateMatchupScoreModalOpen(false);
 	}
 
 	const updateUnsavedPicks = (matchupId, pick) => {
@@ -71,7 +100,6 @@ const MatchupContainer = () => {
 				.then(response => response.json())
 				.then(scheduleData => {
 					setSchedule(scheduleData);
-					console.log("Schedule: " + JSON.stringify(scheduleData));
 
 					if (week) {
 						setWeekStart(new Date(scheduleData[week]));
@@ -148,6 +176,9 @@ const MatchupContainer = () => {
 				isModalOpen={updateMatchupScoreModalOpen}
 				setIsModalOpen={setUpdateMatchupScoreModalOpen}
 				teams={teams}
+				selectedMatchupId={selectedMatchupId}
+				selectedMatchup={selectedMatchup}
+				updateScore={updateScore}
 			/>
 
 			<MatchupTable 
@@ -156,7 +187,7 @@ const MatchupContainer = () => {
 				unsavedPicks={savedPicks}
 				user={currentUser}
 				updateUnsavedPicks={updateUnsavedPicks}
-				setScoreUpdateModalOpen={setUpdateMatchupScoreModalOpen}
+				selectMatchup={selectMatchup}
 			/>
 		</>
 	);

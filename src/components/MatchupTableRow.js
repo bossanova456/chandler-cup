@@ -15,7 +15,7 @@ function getOutcomeString(matchup, favoredTeamName, underdogTeamName) {
 	}
 }
 
-const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateUnsavedPicks, setScoreUpdateModalOpen }) => {
+const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateUnsavedPicks,  selectMatchup }) => {
 	return (
 		<>
 			<tr>
@@ -26,7 +26,7 @@ const MatchupTableRow = ({ matchup, userPick, favoredTeam, underdogTeam, updateU
 				<td>{getOutcomeString(matchup, favoredTeam.teamName, underdogTeam.teamName)}</td>
 				<td>{getUserPickString(userPick)}</td>
 				<td><PickSelectRadioGroup favoredTeam={favoredTeam} underdogTeam={underdogTeam} userPick={userPick} updateUnsavedPicks={updateUnsavedPicks} /></td>
-				<td><Button variant="primary" disabled={false} onClick={() => setScoreUpdateModalOpen(true)}>Update</Button></td>
+				<td><Button variant="primary" onClick={() => selectMatchup()}>Update</Button></td>
 			</tr>
 		</>
 	)

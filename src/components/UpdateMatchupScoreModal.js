@@ -2,7 +2,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const UpdateMatchupScoreModal = ({ teams, isModalOpen, setIsModalOpen }) => {
+import { useState } from "react";
+
+const UpdateMatchupScoreModal = ({ teams, selectedMatchup, isModalOpen, setIsModalOpen, updateScore }) => {
+	const [ selectedFavoredTeamScore, setSelectedFavoredTeamScore ] = useState();
+	const [ selectedUnderdogTeamScore, setSelectedUnderdogTeamScore ] = useState();
+
 	return (
 		<Modal show={isModalOpen} onHide={() => setIsModalOpen(false)}>
 			<Modal.Header>
@@ -12,12 +17,12 @@ const UpdateMatchupScoreModal = ({ teams, isModalOpen, setIsModalOpen }) => {
 
 				<Form>
 					<Form.Group className="mb-3" controlId="formNewMatchupLine">
-						<Form.Label>Favored Score</Form.Label>
-						<Form.Control type="line" placeholder="Enter score" onChange={e => console.log("Entering favored score: " + e.target.value)} />
+						<Form.Label>{teams[selectedMatchup?.favoredTeamId]?.teamName}</Form.Label>
+						<Form.Control type="line" placeholder="Enter score" onChange={e => setSelectedFavoredTeamScore(e.target.value)} />
 					</Form.Group>
 					<Form.Group className="mb-3" controlId="formNewMatchupLine">
-						<Form.Label>Underdog Score</Form.Label>
-						<Form.Control type="line" placeholder="Enter score" onChange={e => console.log("Entering underdog score: " + e.target.value)} />
+						<Form.Label>{teams[selectedMatchup?.underdogTeamId]?.teamName}</Form.Label>
+						<Form.Control type="line" placeholder="Enter score" onChange={e => setSelectedUnderdogTeamScore(e.target.value)} />
 					</Form.Group>
 				</Form>
 
@@ -26,7 +31,10 @@ const UpdateMatchupScoreModal = ({ teams, isModalOpen, setIsModalOpen }) => {
 				<Button variant="secondary" onClick={() => setIsModalOpen(false)}>
 					Close
 				</Button>
-				<Button variant="primary" disabled={false} onClick={() => console.log("Clicked score submit button")}>
+				<Button
+					variant="primary"
+					onClick={() => updateScore(selectedFavoredTeamScore, selectedUnderdogTeamScore)}
+				>
 					Submit
 				</Button>
 			</Modal.Footer>
