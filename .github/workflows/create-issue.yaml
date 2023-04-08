@@ -29,4 +29,5 @@ jobs:
           body: ${{ inputs.description }}
           labels: ${{ inputs.labels }}
       - name: 'Check Outputs'
-        run: echo Created issue number: ${{ steps.create-issue.outputs.issue-number }}
+        run: |
+          echo "Created issue number: ${{ steps.create-issue.outputs.issue-number }}"
