@@ -1,0 +1,32 @@
+name: 'Create Issue'
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Title'
+        required: true
+        type: string
+      description:
+        description: 'Description'
+        required: true
+        type: string
+      labels:
+        description: 'Labels'
+        required: false
+        type: string
+
+jobs:
+  create-issue:
+    runs-on: self-hosted
+    steps:
+      - name: 'Create Issue'
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-issue'
+          token: ${{ secrets.GIT_TOKEN }}
+          title: ${{ inputs.title }}
+          body: ${{ inputs.description }}
+          labels: ${{ inputs.labels }}
+      - name: 'Check Outputs'
+        run: echo Created issue number: ${{ steps.create-issue.outputs.issue-number }}
