@@ -19,7 +19,7 @@ const MatchupContainer = () => {
 	const [ schedule, setSchedule ] = useState({});
 	const [ weekStart, setWeekStart ] = useState();
 	const [ weekEnd, setWeekEnd ] = useState();
-	const [ matchupWeeks, setMatchupWeeks ] = useState({});
+	const [ matchupWeeks, setMatchupWeeks ] = useState([]);
 
 	const [ selectedMatchupId, setSelectedMatchupId ] = useState('');
 	const [ selectedMatchup, setSelectedMatchup ] = useState({});
@@ -185,7 +185,11 @@ const MatchupContainer = () => {
 					</Dropdown.Toggle>
 
 					<Dropdown.Menu>
-						{Object.keys(matchupWeeks).map(week => {
+						{matchupWeeks.sort((a, b) => {
+							if (parseInt(a) > parseInt(b)) return 1;
+							if (parseInt(a) < parseInt(b)) return -1;
+							return 0;
+						}).map(week => {
 							return <Dropdown.Item
 								key={week} href={"#/" + week}
 								onClick={() => setCurrentWeek((week.length === 1 ? "0" : "") + week)}
