@@ -4,6 +4,7 @@ import UpdateMatchupScoreModal from "./UpdateMatchupScoreModal";
 
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const MatchupContainer = () => {
 	const [ teams, setTeams ] = useState({});
@@ -12,12 +13,13 @@ const MatchupContainer = () => {
 	const [ savedPicks, setSavedPicks ] = useState({});
 	const [ unsavedPicks, setUnsavedPicks ] = useState({});
 	const [ year, setYear ] = useState('');
-	const [ week, setWeek ] = useState('01');
+	const [ currentWeek, setCurrentWeek ] = useState('01');
 	const [ currentSeason, setCurrentSeason ] = useState({});
 	const [ currentUser, setCurrentUser ] = useState('sharon');
 	const [ schedule, setSchedule ] = useState({});
 	const [ weekStart, setWeekStart ] = useState();
 	const [ weekEnd, setWeekEnd ] = useState();
+	const [ matchupWeeks, setMatchupWeeks ] = useState({});
 
 	const [ selectedMatchupId, setSelectedMatchupId ] = useState('');
 	const [ selectedMatchup, setSelectedMatchup ] = useState({});
@@ -28,12 +30,12 @@ const MatchupContainer = () => {
 	///////////////////////////////////////////////////////////////////
 
 	const writeMatchupData = (matchupId, matchupData) => {
-		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week + '/matchup/' + matchupId, {
+		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + currentWeek + '/matchup/' + matchupId, {
 			method: "POST",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(matchupData[matchupId])
 		})
-			.then(data => {
+			.then(() => {
 				setSavedMatchups(matchupData);
 			}, (err) => {
 				console.error(err);
@@ -41,8 +43,6 @@ const MatchupContainer = () => {
 	}
 
 	const addMatchup = (matchupId, matchup) => {
-		console.log("Add Matchup function entered - matchupId: " + matchupId + " | " + JSON.stringify(matchup));
-
 		const matchupDataCopy = {...savedMatchups};
 		matchupDataCopy[matchupId] = matchup;
 
@@ -56,8 +56,6 @@ const MatchupContainer = () => {
 	}
 
 	const updateScore = (favoredTeamScore, underdogTeamScore) => {
-		console.log("Entering update score method: " + selectedMatchupId + " | " + favoredTeamScore + " | " + underdogTeamScore);
-
 		const updatedScoreMatchupData = { ...savedMatchups };
 
 		updatedScoreMatchupData[selectedMatchupId].favoredScore = favoredTeamScore;
@@ -78,18 +76,35 @@ const MatchupContainer = () => {
 
 		unsavedPicksMatchupKeys.map(unsavedPickMatchup => {
 			// Use values for current user, current year, and current week
-			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + week + '/matchup/' + unsavedPickMatchup + '/user/' + currentUser, {
+			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + currentWeek + '/matchup/' + unsavedPickMatchup + '/user/' + currentUser, {
 				method: "POST",
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify(savedPicks[currentUser][unsavedPickMatchup])
 			})
-				.then(data => {
+				.then(() => {
 					console.log('Save pick: SUCCESS');
 				}, (err) => {
 					console.error(err);
 				})
 		})
 	}
+
+	///////////////////////////////////////////////////////////////////
+
+	// Get matchup weeks
+	useEffect(() => {
+		if (year) {
+			fetch('http://localhost:3001/matchups/year/' + year + '/weeks', {
+				cache: 'default'
+			})
+				.then(response => response.json())
+				.then(weekData => {
+					setMatchupWeeks(weekData);
+				}, (err) => {
+					console.error(err);
+				})
+		}
+	}, [ year ])
 
 	// Get schedule
 	useEffect(() => {
@@ -101,15 +116,15 @@ const MatchupContainer = () => {
 				.then(scheduleData => {
 					setSchedule(scheduleData);
 
-					if (week) {
-						setWeekStart(new Date(scheduleData[week]));
-						setWeekEnd(new Date(new Date(scheduleData[week]).setDate(new Date(scheduleData[week]).getDate() + 7)));
+					if (currentWeek) {
+						setWeekStart(new Date(scheduleData[currentWeek]));
+						setWeekEnd(new Date(new Date(scheduleData[currentWeek]).setDate(new Date(scheduleData[currentWeek]).getDate() + 7)));
 					}
 				}, err => {
 					console.error(err);
 				})
 		}
-	}, [ year, week ]);
+	}, [ year, currentWeek ]);
 
 	// Get teams
 	useEffect(() => {
@@ -130,38 +145,56 @@ const MatchupContainer = () => {
 			.then(data => {
 				setCurrentSeason(data);
 				setYear(data.year);
-				setWeek(data.week);
+				setCurrentWeek(data.week);
 			});
 	}, []);
 
 	// Should use current year data from call
 	useEffect(() => {
-		if (year && week) {
+		if (year && currentWeek) {
 			// Get matchups
-			fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + week)
+			fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + currentWeek)
 				.then(response => response.json())
 				.then(data => {
 					setSavedMatchups(data);
 				}, () => {
-					console.error("Error: could not get matchup data (year: " + year + ", week: " + week + ")");
+					console.error("Error: could not get matchup data (year: " + year + ", week: " + currentWeek + ")");
 				});
 
 			// Get picks
-			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + week)
+			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + currentWeek)
 				.then(response => response.json())
 				.then(data => {
 					setPicks(data);
 					setSavedPicks(data);
 				}, () => {
-					console.error("Error: pick data not found (year: " + year + ", week: " + week + ")");
+					console.error("Error: pick data not found (year: " + year + ", week: " + currentWeek + ")");
 				});
 		}
-	}, [ year, week ]);
+	}, [ year, currentWeek ]);
 
 	return (
 		<>
 			<Button onClick={savePicks}>Save Picks</Button>
 			<Button onClick={() => setAddMatchupModalOpen(true)}>Add Matchup</Button>
+			<Button onClick={() => console.log("Clicked button for add week")}>Add Week</Button>
+			
+			<Dropdown>
+					<Dropdown.Toggle variant="success" id="select-week-dropdown">
+						Select Week
+					</Dropdown.Toggle>
+
+					<Dropdown.Menu>
+						{Object.keys(matchupWeeks).map(week => {
+							return <Dropdown.Item
+								key={week} href={"#/" + week}
+								onClick={() => setCurrentWeek((week.length === 1 ? "0" : "") + week)}
+							>
+								{week}
+							</Dropdown.Item>
+						})}
+					</Dropdown.Menu>
+				</Dropdown>
 
 			<AddMatchupModal
 				isModalOpen={addMatchupModalOpen}
