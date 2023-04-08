@@ -1,6 +1,6 @@
 import MatchupTableRow from "./MatchupTableRow";
 
-const MatchupTable = ({ matchups, savedPicks, unsavedPicks, teams, user, updateUnsavedPicks }) => {
+const MatchupTable = ({ matchups, savedPicks, unsavedPicks, teams, user, updateUnsavedPicks, selectMatchup, updateScore }) => {
 
 	
 	return (
@@ -15,6 +15,7 @@ const MatchupTable = ({ matchups, savedPicks, unsavedPicks, teams, user, updateU
 						<th>Outcome</th>
 						<th>Pick</th>
 						<th>Set Pick</th>
+						<th>Update Score</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,6 +36,7 @@ const MatchupTable = ({ matchups, savedPicks, unsavedPicks, teams, user, updateU
 											favoredTeam={teams[matchups[matchupId].favoredTeamId]}
 											underdogTeam={teams[matchups[matchupId].underdogTeamId]}
 											updateUnsavedPicks={updateUnsavedPicks}
+											selectMatchup={() => selectMatchup(matchupId)}
 										/>
 						})
 					}
