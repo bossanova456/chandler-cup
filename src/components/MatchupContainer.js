@@ -104,7 +104,7 @@ const MatchupContainer = () => {
 	const addWeek = (newWeek) => {
 		console.log("Entering Add Week method");
 
-		fetch('http://localhost:3001/matchups/year/' + year + '/addWeek/' + newWeek, {
+		fetch(BACKEND_URL + ':' + BACKEND_PORT + '/matchups/year/' + year + '/addWeek/' + newWeek, {
 			method: "POST",
 		})
 			.then(() => {
@@ -119,7 +119,7 @@ const MatchupContainer = () => {
 	// Get matchup weeks
 	useEffect(() => {
 		if (year) {
-			fetch('http://localhost:3001/matchups/year/' + year + '/weeks', {
+			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/matchups/year/' + year + '/weeks', {
 				cache: 'default'
 			})
 				.then(response => response.json())
