@@ -1,5 +1,6 @@
 import MatchupTable from "./MatchupTable";
 import AddMatchupModal from "./AddMatchupModal";
+import AddWeekModal from "./AddWeekModal";
 import UpdateMatchupScoreModal from "./UpdateMatchupScoreModal";
 
 import { useState, useEffect } from "react";
@@ -30,6 +31,7 @@ const MatchupContainer = () => {
 
 	const [ addMatchupModalOpen, setAddMatchupModalOpen ] = useState(false);
 	const [ updateMatchupScoreModalOpen, setUpdateMatchupScoreModalOpen ] = useState(false);
+	const [ addWeekModalOpen, setAddweekModalOpen ] = useState(false);
 
 	///////////////////////////////////////////////////////////////////
 
@@ -59,6 +61,8 @@ const MatchupContainer = () => {
 		setUpdateMatchupScoreModalOpen(true);
 	}
 
+	///////////////////////////////////////////////////////////////////
+
 	const updateScore = (favoredTeamScore, underdogTeamScore) => {
 		const updatedScoreMatchupData = { ...savedMatchups };
 
@@ -68,6 +72,8 @@ const MatchupContainer = () => {
 		writeMatchupData(selectedMatchupId, updatedScoreMatchupData);
 		setUpdateMatchupScoreModalOpen(false);
 	}
+
+	///////////////////////////////////////////////////////////////////
 
 	const updateUnsavedPicks = (matchupId, pick) => {
 		const unsavedPicksCopy = {...savedPicks};
@@ -95,10 +101,25 @@ const MatchupContainer = () => {
 
 	///////////////////////////////////////////////////////////////////
 
+	const addWeek = (newWeek) => {
+		console.log("Entering Add Week method");
+
+		fetch('http://localhost:3001/matchups/year/' + year + '/addWeek/' + newWeek, {
+			method: "POST",
+		})
+			.then(() => {
+				setMatchupWeeks([...matchupWeeks, newWeek]);
+			}, (err) => {
+				console.error(err);
+			})
+	}
+
+	///////////////////////////////////////////////////////////////////
+
 	// Get matchup weeks
 	useEffect(() => {
 		if (year) {
-			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/matchups/year/' + year + '/weeks', {
+			fetch('http://localhost:3001/matchups/year/' + year + '/weeks', {
 				cache: 'default'
 			})
 				.then(response => response.json())
@@ -141,6 +162,7 @@ const MatchupContainer = () => {
 			});
 	}, []);
 
+	// Get current season
 	useEffect(() => {
 		fetch(BACKEND_URL + ':' + BACKEND_PORT + '/currentSeason', {
 			cache: "default"
@@ -181,7 +203,7 @@ const MatchupContainer = () => {
 		<>
 			<Button onClick={savePicks}>Save Picks</Button>
 			<Button onClick={() => setAddMatchupModalOpen(true)}>Add Matchup</Button>
-			<Button onClick={() => console.log("Clicked button for add week")}>Add Week</Button>
+			<Button onClick={() => setAddweekModalOpen(true)}>Add Week</Button>
 			
 			<Dropdown>
 					<Dropdown.Toggle variant="success" id="select-week-dropdown">
@@ -220,6 +242,13 @@ const MatchupContainer = () => {
 				selectedMatchupId={selectedMatchupId}
 				selectedMatchup={selectedMatchup}
 				updateScore={updateScore}
+			/>
+
+			<AddWeekModal
+				isModalOpen={addWeekModalOpen}
+				setIsModalOpen={setAddweekModalOpen}
+				weeks={matchupWeeks}
+				addWeek={addWeek}
 			/>
 
 			<MatchupTable 
