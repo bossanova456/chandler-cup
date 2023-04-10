@@ -1,10 +1,10 @@
 name: 'Update & Close Issue'
 
 on:
-	pull_request:
-		types:
+  pull_request:
+    types:
       - opened
-			- closed
+      - closed
 
 jobs:
   update-issue:
