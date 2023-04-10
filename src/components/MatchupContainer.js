@@ -6,7 +6,11 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT;
+
 const MatchupContainer = () => {
+
 	const [ teams, setTeams ] = useState({});
 	const [ savedMatchups, setSavedMatchups ] = useState([]);
 	const [ picks, setPicks ] = useState({});
@@ -30,7 +34,7 @@ const MatchupContainer = () => {
 	///////////////////////////////////////////////////////////////////
 
 	const writeMatchupData = (matchupId, matchupData) => {
-		fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + currentWeek + '/matchup/' + matchupId, {
+		fetch(BACKEND_URL + ':' + BACKEND_PORT + '/matchups/year/' + year + '/week/' + currentWeek + '/matchup/' + matchupId, {
 			method: "POST",
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(matchupData[matchupId])
@@ -76,7 +80,7 @@ const MatchupContainer = () => {
 
 		unsavedPicksMatchupKeys.map(unsavedPickMatchup => {
 			// Use values for current user, current year, and current week
-			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + currentWeek + '/matchup/' + unsavedPickMatchup + '/user/' + currentUser, {
+			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/picks/year/' + year + '/week/' + currentWeek + '/matchup/' + unsavedPickMatchup + '/user/' + currentUser, {
 				method: "POST",
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify(savedPicks[currentUser][unsavedPickMatchup])
@@ -94,7 +98,7 @@ const MatchupContainer = () => {
 	// Get matchup weeks
 	useEffect(() => {
 		if (year) {
-			fetch('http://localhost:3001/matchups/year/' + year + '/weeks', {
+			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/matchups/year/' + year + '/weeks', {
 				cache: 'default'
 			})
 				.then(response => response.json())
@@ -109,7 +113,7 @@ const MatchupContainer = () => {
 	// Get schedule
 	useEffect(() => {
 		if (year) {
-			fetch('http://192.168.1.51:3001/schedule/year/' + year, {
+			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/schedule/year/' + year, {
 				cache: 'default'
 			})
 				.then(response => response.json())
@@ -128,7 +132,7 @@ const MatchupContainer = () => {
 
 	// Get teams
 	useEffect(() => {
-		fetch('http://192.168.1.51:3001/teams', {
+		fetch(BACKEND_URL + ':' + BACKEND_PORT + '/teams', {
 			cache: "default"
 		})
 			.then(response => response.json())
@@ -138,7 +142,7 @@ const MatchupContainer = () => {
 	}, []);
 
 	useEffect(() => {
-		fetch('http://192.168.1.51:3001/currentSeason', {
+		fetch(BACKEND_URL + ':' + BACKEND_PORT + '/currentSeason', {
 			cache: "default"
 		})
 			.then(response => response.json())
@@ -153,7 +157,7 @@ const MatchupContainer = () => {
 	useEffect(() => {
 		if (year && currentWeek) {
 			// Get matchups
-			fetch('http://192.168.1.51:3001/matchups/year/' + year + '/week/' + currentWeek)
+			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/matchups/year/' + year + '/week/' + currentWeek)
 				.then(response => response.json())
 				.then(data => {
 					setSavedMatchups(data);
@@ -162,7 +166,7 @@ const MatchupContainer = () => {
 				});
 
 			// Get picks
-			fetch('http://192.168.1.51:3001/picks/year/' + year + '/week/' + currentWeek)
+			fetch(BACKEND_URL + ':' + BACKEND_PORT + '/picks/year/' + year + '/week/' + currentWeek)
 				.then(response => response.json())
 				.then(data => {
 					setPicks(data);
