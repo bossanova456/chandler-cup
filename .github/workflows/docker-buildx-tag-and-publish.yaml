@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 0
       - name: Version
         if: ${{ github.ref_type != 'branch' }}
-        id: version
+        id: version-main
         uses: PaulHatch/semantic-version@v5.0.3
         with:
           version_format: "v${major}.${minor}.${patch}"
@@ -50,17 +50,18 @@ jobs:
         shell: bash
         run: |
           if [[ ${{ github.ref_type == 'branch' }} ]]; then GIT_TAG="${{ steps.version-dev.outputs.version }}"
-          else GIT_TAG="${{ steps.version-dev.outputs.version }}"
+          else GIT_TAG="${{ steps.version-main.outputs.version }}"
           fi
           echo "version-tag=${GIT_TAG}" >> "$GITHUB_OUTPUT"
 
+        # Only tag upon merged pull request
       - name: Tag Version
         if: ${{ github.ref_type != 'branch' }}
         id: tag
         shell: bash
         run: |
           echo "Semantic version: ${{ steps.version-output.outputs.version }}"
-          git tag ${{ steps.version.outputs.version }}
+          git tag ${{ steps.version-output.outputs.version }}
           git push origin --tags
 
   build-image-and-push:
@@ -85,5 +86,5 @@ jobs:
           push: true
           platforms: linux/arm64
           tags: |
-            bossanova456/chandler-cup-frontend:latest-arm64
+            bossanova456/chandler-cup-frontend:dev-latest-arm64
             bossanova456/chandler-cup-frontend:${{ needs.version.outputs.version }}-arm64
