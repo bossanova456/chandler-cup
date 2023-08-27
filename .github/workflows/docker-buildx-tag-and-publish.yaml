@@ -1,10 +1,24 @@
-name: Build & Publish
+name: Test, Build Image & Publish
 
 on: [ workflow_dispatch, push ]
-    # branches: [ "main" ]
 
 jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install
+        run: npm install
+      - name: Test
+        run: npm test
+
   version:
+    needs: [ build-and-test ]
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version-output.outputs.version-tag }}
@@ -49,7 +63,7 @@ jobs:
           git tag ${{ steps.version.outputs.version }}
           git push origin --tags
 
-  build-and-push:
+  build-image-and-push:
     needs: [ version ]
     runs-on: ubuntu-latest
     steps:
