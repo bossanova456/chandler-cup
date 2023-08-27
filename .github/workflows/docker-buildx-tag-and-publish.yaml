@@ -41,7 +41,7 @@ jobs:
         id: version-dev
         uses: PaulHatch/semantic-version@v5.0.3
         with:
-          version_format: "v${major}.${minor}.${patch}-${{ github.ref_name }}"
+          version_format: "v${major}.${minor}.${patch}-${{ github.ref_name }}-${increment}"
           major_pattern: "MAJOR"
           minor_pattern: "MINOR"
           # bump_each_commit: true
