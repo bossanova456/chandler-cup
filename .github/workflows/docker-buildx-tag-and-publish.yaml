@@ -1,6 +1,11 @@
 name: Test, Build Image & Publish
 
-on: [ workflow_dispatch, push ]
+on: 
+  workflow_dispatch:
+  push:
+  pull_request:
+    types:
+      - closed
 
 jobs:
   build-and-test:
@@ -21,47 +26,27 @@ jobs:
     needs: [ build-and-test ]
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version-output.outputs.version-tag }}
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Version
-        if: ${{ github.ref_type != 'branch' }}
-        id: version-main
+        id: version
         uses: PaulHatch/semantic-version@v5.0.3
         with:
           version_format: "v${major}.${minor}.${patch}"
           major_pattern: "MAJOR"
           minor_pattern: "MINOR"
-          # bump_each_commit: true
-      - name: Version (Dev)
-        if: ${{ github.ref_type == 'branch' }}
-        id: version-dev
-        uses: PaulHatch/semantic-version@v5.0.3
-        with:
-          version_format: "v${major}.${minor}.${patch}-${{ github.ref_name }}-${increment}"
-          major_pattern: "MAJOR"
-          minor_pattern: "MINOR"
-          # bump_each_commit: true
-      - name: Version Output
-        id: version-output
-        shell: bash
-        run: |
-          if [[ ${{ github.ref_type == 'branch' }} ]]; then GIT_TAG="${{ steps.version-dev.outputs.version }}"
-          else GIT_TAG="${{ steps.version-main.outputs.version }}"
-          fi
-          echo "version-tag=${GIT_TAG}" >> "$GITHUB_OUTPUT"
-
         # Only tag upon merged pull request
       - name: Tag Version
-        if: ${{ github.ref_type != 'branch' }}
+        if: github.event.pull_request.merged == true
         id: tag
         shell: bash
         run: |
-          echo "Semantic version: ${{ steps.version-output.outputs.version }}"
-          git tag ${{ steps.version-output.outputs.version }}
+          echo "Semantic version: ${{ steps.version.outputs.version }}"
+          git tag ${{ steps.version.outputs.version }}
           git push origin --tags
 
   build-image-and-push:
@@ -86,5 +71,19 @@ jobs:
           push: true
           platforms: linux/arm64
           tags: |
-            bossanova456/chandler-cup-frontend:dev-latest-arm64
+            bossanova456/chandler-cup-frontend:latest-arm64
             bossanova456/chandler-cup-frontend:${{ needs.version.outputs.version }}-arm64
+  
+  add-comment-to-issue:
+    needs: [ build-and-test ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Issue
+        shell: bash
+        run: |
+          readarray -d "-" -t branch_string <<< "${{ github.ref_name }}"
+          ISSUE_NUM=${branch_string[1]}
+          echo "Issue number: ${issue_number}"
+          echo "issue-num=${ISSUE_NUM}" >> "$GITHUB_OUTPUT"
+
+        
