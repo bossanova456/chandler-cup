@@ -78,6 +78,8 @@ jobs:
   add-comment-to-issue:
     needs: [ build-and-test ]
     runs-on: ubuntu-latest
+    outputs:
+      comment-id: ${{ steps.post-comment.outputs.comment-id }}
     steps:
       - name: Get Issue Number
         id: get-issue-number
@@ -88,11 +90,29 @@ jobs:
           echo "Issue number: ${ISSUE_NUM}"
           echo "issue-num=${ISSUE_NUM}" >> "$GITHUB_OUTPUT"
       - name: Post Comment
+        id: post-comment
         uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ steps.get-issue-number.outputs.issue-num }}
           body: |
-            This is a test
+            This comment will have a :eyes: reaction while build is in progress, and :rocket: when build is complete
           reactions: eyes
+      - name: Print Comment ID
+        shell: bash
+        run: |
+          echo "Comment ID: ${{ steps.post-comment.outputs.comment-id }}"
 
-        
+  # update-comment-with-build-status:
+  #   if: ${{ always() && !cancelled() && needs.add-comment-to-issue.result == 'success' }}
+  #   needs: [ build-image-and-push, add-comment-to-issue ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Update Comment
+  #       uses: peter-evans/create-or-update-comment@v3
+  #       with:
+  #         issue-number: ${{ needs.add-comment-to-issue.outputs.comment-id }}
+  #         edit-mode: 'replace'
+  #         body: |
+  #           This comment will have a :white_square_button: reaction while build is in progress, and :white_check_mark: when build is complete
+  #         reactions-edit-mode: 'replace'
+  #         reactions: white_check_mark
