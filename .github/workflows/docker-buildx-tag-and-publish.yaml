@@ -79,12 +79,20 @@ jobs:
     needs: [ build-and-test ]
     runs-on: ubuntu-latest
     steps:
-      - name: Get Issue
+      - name: Get Issue Number
+        id: get-issue-number
         shell: bash
         run: |
           readarray -d "-" -t branch_string <<< "${{ github.ref_name }}"
           ISSUE_NUM=${branch_string[1]}
           echo "Issue number: ${ISSUE_NUM}"
           echo "issue-num=${ISSUE_NUM}" >> "$GITHUB_OUTPUT"
+      - name: Post Comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ steps.get-issue-number.outputs.issue-num }}
+          body: |
+            This is a test
+          reactions: eyes
 
         
