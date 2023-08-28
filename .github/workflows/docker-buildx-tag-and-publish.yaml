@@ -68,7 +68,8 @@ jobs:
       - name: Build image and push (arm64)
         uses: docker/build-push-action@v4
         with:
-          push: true
+          push: false
+          # push: true
           platforms: linux/arm64
           tags: |
             bossanova456/chandler-cup-frontend:latest-arm64
@@ -83,7 +84,7 @@ jobs:
         run: |
           readarray -d "-" -t branch_string <<< "${{ github.ref_name }}"
           ISSUE_NUM=${branch_string[1]}
-          echo "Issue number: ${issue_number}"
+          echo "Issue number: ${ISSUE_NUM}"
           echo "issue-num=${ISSUE_NUM}" >> "$GITHUB_OUTPUT"
 
         
