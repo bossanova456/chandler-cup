@@ -1,11 +1,14 @@
 name: Test, Build Image & Publish
 
-on: 
+on:
   workflow_dispatch:
-  push:
   pull_request:
     types:
+      - opened
+      - edited
       - closed
+      - reopened
+      - synchronize
 
 jobs:
   build-and-test:
@@ -50,6 +53,7 @@ jobs:
           git push origin --tags
 
   build-image-and-push:
+    if: ${{ github.event.pull_request.merged }}
     needs: [ version ]
     runs-on: ubuntu-latest
     steps:
@@ -68,8 +72,7 @@ jobs:
       - name: Build image and push (arm64)
         uses: docker/build-push-action@v4
         with:
-          push: false
-          # push: true
+          push: true
           platforms: linux/arm64
           tags: |
             bossanova456/chandler-cup-frontend:latest-arm64
