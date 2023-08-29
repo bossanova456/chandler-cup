@@ -1,6 +1,6 @@
-FROM node:19-alpine
+FROM node:20-alpine
 
-RUN apt update && apt upgrade -y
+RUN apk upgrade -v
 
 WORKDIR /app
 COPY . .

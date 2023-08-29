@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Create Issue'
+        id: create-issue
         uses: actions-cool/issues-helper@v3
         with:
           actions: 'create-issue'
